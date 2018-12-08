@@ -5,7 +5,7 @@
 <head>
     <title>Ini juga keren</title>
     <script src="libs/three.min.js"></script>
-    <script src="libs/dat.gui.js"></script>
+    <script src="libs/dat.gui.min.js"></script>
     <script src="libs/WebVR.js"></script>
 
     <style>
@@ -21,6 +21,14 @@
     <div id="canvas"></div>
     <script type="text/javascript">
         function init() {
+            var planeKananAtasGeometry, planeKiriAtasGeometry;
+            var planeKiriTengahGeometry, planeTengahGeometry, planeKananTengahGeometry;
+            var planeKananBawahGeometry, planeKiriBawahGeometry;
+
+            var planeKananAtasMesh, planeKiriAtasMesh;
+            var planeTengahMesh, planeKananAtasMesh, planeKiriAtasMesh;
+            var planeKananBawahMesh, planeKiriBawahMesh;
+
             var mouseX, mouseY;
             var step = 0;
 
@@ -29,59 +37,109 @@
 
             var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-            var renderer = new THREE.WebGLRenderer();
+            var renderer = new THREE.WebGLRenderer({
+                antialias: true
+            });
             renderer.setClearColor('#000000');
             renderer.setSize(window.innerWidth, window.innerHeight);
 
             camera.position.x = 0;
-            camera.position.y = 10;
-            camera.position.z = 500;
+            camera.position.y = 400;
+            camera.position.z = 100;
 
             camera.lookAt(scene.position);
 
             document.getElementById("canvas").appendChild(renderer.domElement);
 
+            var greenMaterial = new THREE.MeshBasicMaterial({
+                color: 0x32cb00
+            });
 
-            var cloud;
-            createParticles();
+            var blueMaterial = new THREE.MeshBasicMaterial({
+                color: 0x004ecb
+            });
+
+            createPlaneAtas();
+            createPlaneTengah();
+            createPlaneBawah();
+
             render();
 
-            function createParticles() {
-                var geometry = new THREE.Geometry();
-                var material = new THREE.PointsMaterial({
-                    size: 2, 
-                    vertexColors: true, 
-                    color: 0xffffff
-                });
-                
-                for (var x = -50; x < 50; x++) {
-                    for (var y = -50; y < 50; y++) {
-                        var particle = new THREE.Vector3(x * 10, 0, y * 10);
-                        geometry.vertices.push(particle);
-                        geometry.colors.push(new THREE.Color((Math.random() * (1000 - 750) + 750 * 0x00ffff)));
-                    }
-                }
+            function createPlaneAtas() {
+                planeKananAtasGeometry = new THREE.CylinderGeometry(50, 50, 2, 6);
+                planeKananAtasGeometry.translate(45, 0, -80);
+                planeKananAtasMesh = new THREE.Mesh(planeKananAtasGeometry, greenMaterial);
 
-                cloud = new THREE.Points(geometry, material);
-                cloud.sortParticles = true;
-                cloud.position.x -= x/20;
-                cloud.position.z -= x/20;
-                scene.add(cloud);
+                planeKiriAtasGeometry = new THREE.CylinderGeometry(50, 50, 2, 6);
+                planeKiriAtasGeometry.translate(-45, 0, -80);
+                planeKiriAtasMesh = new THREE.Mesh(planeKiriAtasGeometry, greenMaterial);
+
+                scene.add(planeKananAtasMesh);
+                scene.add(planeKiriAtasMesh);
+            
+                createWireframe(planeKananAtasGeometry);
+                createWireframe(planeKiriAtasGeometry);
+            }
+
+            function createPlaneTengah() {
+                planeKiriTengahGeometry = new THREE.CylinderGeometry(50, 50, 2, 6);
+                planeKiriTengahGeometry.translate(-90, 0, 0);
+                planeKiriTengahMesh = new THREE.Mesh(planeKiriTengahGeometry, greenMaterial);
+
+                planeTengahGeometry = new THREE.CylinderGeometry(50, 50, 2, 6);
+                planeTengahGeometry.translate(0, 0, 0);
+                planeTengahMesh = new THREE.Mesh(planeTengahGeometry, blueMaterial);
+
+                planeKananTengahGeometry = new THREE.CylinderGeometry(50, 50, 2, 6);
+                planeKananTengahGeometry.translate(90, 0, 0);
+                planeKananTengahMesh = new THREE.Mesh(planeKananTengahGeometry, greenMaterial);
+
+                scene.add(planeKiriTengahMesh);
+                scene.add(planeTengahMesh);
+                scene.add(planeKananTengahMesh);
+
+                createWireframe(planeKiriTengahGeometry);
+                createWireframe(planeTengahGeometry);
+                createWireframe(planeKananTengahGeometry);
+            }
+
+            function createPlaneBawah() {
+                planeKananBawahGeometry = new THREE.CylinderGeometry(50, 50, 2, 6);
+                planeKananBawahGeometry.translate(45, 0, 80);
+                planeKananBawahMesh = new THREE.Mesh(planeKananBawahGeometry, greenMaterial);
+
+                planeKiriBawahGeometry = new THREE.CylinderGeometry(50, 50, 2, 6);
+                planeKiriBawahGeometry.translate(-45, 0, 80);
+                planeKiriBawahMesh = new THREE.Mesh(planeKiriBawahGeometry, greenMaterial);
+
+                scene.add(planeKananBawahMesh);
+                scene.add(planeKiriBawahMesh);
+            
+                createWireframe(planeKananBawahGeometry);
+                createWireframe(planeKiriBawahGeometry);
+            }
+
+            function createWireframe(geometry) {
+                var wireframe = new THREE.WireframeGeometry(geometry);
+
+                var material = new THREE.LineBasicMaterial( {
+                    color: 0xffffff,
+                    linewidth: 1,
+                    linecap: 'round',
+                    linejoin:  'round'
+                });
+
+                var line = new THREE.LineSegments(wireframe, material);
+                line.material.depthTest = false;
+                line.material.opacity = 0.25;
+                line.material.transparent = true;
+
+                scene.add(line); 
             }
 
             function render() {
-                step += 0.005;
-                var geometry = cloud.geometry;
-                geometry.vertices.forEach(function(v) {
-                    v.y = (Math.sin((v.x / 2 + step) * Math.PI * 2 )
-                        + Math.cos((v.z / 2 + step * 2) * Math.PI )
-                        + Math.sin((v.x + v.y + step * 2) / 4 * Math.PI)) / 2;
-                 });
-                
                 requestAnimationFrame(render);
                 renderer.render(scene, camera);
-
-                geometry.verticesNeedUpdate = true; 
             }
         }
 

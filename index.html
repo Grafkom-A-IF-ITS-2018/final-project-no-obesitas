@@ -29,8 +29,7 @@
             var planeTengahMesh, planeKananAtasMesh, planeKiriAtasMesh;
             var planeKananBawahMesh, planeKiriBawahMesh;
 
-            var mouseX, mouseY;
-            var step = 0;
+            var cloud;
 
             var scene = new THREE.Scene();
             scene.fog = new THREE.FogExp2(0x000000, 0.0007);
@@ -44,8 +43,8 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
 
             camera.position.x = 0;
-            camera.position.y = 400;
-            camera.position.z = 100;
+            camera.position.y = 100;
+            camera.position.z = 200;
 
             camera.lookAt(scene.position);
 
@@ -59,11 +58,28 @@
                 color: 0x004ecb
             });
 
+            createSkybox();
             createPlaneAtas();
             createPlaneTengah();
             createPlaneBawah();
 
             render();
+
+            function createSkybox() {
+                var geometry = new THREE.SphereGeometry(500, 100, 50);
+                var material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+                var sphere = new THREE.Mesh( geometry, material );
+
+                var materialCloud = new THREE.PointsMaterial({
+                    color: 0xffffff,
+                    size: 5,
+                    transparent: true
+                });
+
+                cloud = new THREE.Points(geometry, materialCloud);
+                cloud.sortParticles = true;
+                scene.add(cloud);
+            }
 
             function createPlaneAtas() {
                 planeKananAtasGeometry = new THREE.CylinderGeometry(50, 50, 2, 6);
@@ -138,6 +154,15 @@
             }
 
             function render() {
+                var time = Date.now() * 0.00005;
+                for (i = 0; i < scene.children.length; i++) {
+                    var object = scene.children[i];
+                    
+                    if (object instanceof THREE.Points) {
+                        object.rotation.y = time * (i < 4 ? i + 1 : -(i + 1));
+                    }
+                }
+
                 requestAnimationFrame(render);
                 renderer.render(scene, camera);
             }

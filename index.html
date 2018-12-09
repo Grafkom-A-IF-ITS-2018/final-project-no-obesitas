@@ -9,6 +9,8 @@
     <script src="libs/WebVR.js"></script>
     <script src="libs/PointerLockControls.js"></script>
     <script src="libs/OrbitControls.js"></script>
+    <script src="libs/OBJLoader.js"></script>
+    <script src="libs/TextureLoader.js"></script>
 
     <style>
         body {
@@ -40,6 +42,7 @@
         //puter puter pake mos
         controls = new THREE.OrbitControls( camera, renderer);
         //
+
         function init() {
             var planeKananAtasGeometry, planeKiriAtasGeometry;
             var planeKiriTengahGeometry, planeTengahGeometry, planeKananTengahGeometry;
@@ -154,6 +157,22 @@
                 requestAnimationFrame(render);
                 renderer.render(scene, camera);
             }
+            
+            var textureLoader = new THREE.TextureLoader();
+            var map = textureLoader.load('assets/PineTexture.png');
+            var material = new THREE.MeshPhongMaterial({map: map});
+
+            var objLoader = new THREE.OBJLoader();
+            objLoader.load('assets/PineTree1Snowy.obj', function(object){
+                object.scale.x = 10;
+                object.scale.y = 10;
+                object.scale.z = 10;
+                object.traverse(function(node){
+                    if(node.isMesh) node.material = material;
+                });
+
+                scene.add(object);
+            });
         }
         //window.onload = init;
         init();

@@ -167,6 +167,20 @@
                 object.scale.x = 10;
                 object.scale.y = 10;
                 object.scale.z = 10;
+                object.position.x -= 60;
+                object.position.z += 60;
+                object.traverse(function(node){
+                    if(node.isMesh) node.material = material;
+                });
+
+                scene.add(object);
+            });
+            objLoader.load('assets/PineTree1Snowy.obj', function(object){
+                object.scale.x = 10;
+                object.scale.y = 10;
+                object.scale.z = 10;
+                object.position.x -= 80;
+                object.position.z -= 70;
                 object.traverse(function(node){
                     if(node.isMesh) node.material = material;
                 });

@@ -11,6 +11,7 @@
     <script src="libs/OrbitControls.js"></script>
     <script src="libs/OBJLoader.js"></script>
     <script src="libs/TextureLoader.js"></script>
+    <script src="libs/MeshBasicMaterial.js"></script>
 
     <style>
         body {
@@ -158,9 +159,8 @@
                 renderer.render(scene, camera);
             }
             
-            var textureLoader = new THREE.TextureLoader();
-            var map = textureLoader.load('assets/PineTexture.png');
-            var material = new THREE.MeshPhongMaterial({map: map});
+            var texture = new THREE.TextureLoader().load('assets/PineTexture.png');
+            var material = new THREE.MeshBasicMaterial({map:texture});
 
             var objLoader = new THREE.OBJLoader();
             objLoader.load('assets/PineTree1Snowy.obj', function(object){

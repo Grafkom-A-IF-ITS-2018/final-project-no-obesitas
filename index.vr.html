@@ -124,47 +124,176 @@
         var flakeArray = snow.children;
         //var starArray = star
 
-        var planeKananAtasGeometry = new THREE.CylinderGeometry(25, 25, 2, 6);
-        planeKananAtasGeometry.translate(25, 0, -40);
+        var planeKananAtasGeometry = new THREE.CylinderGeometry(50, 50, 2, 6);
+        planeKananAtasGeometry.translate(45, 0, -80);
         var planeKananAtasMesh = new THREE.Mesh(planeKananAtasGeometry, greenMaterial);
-        scene.add(planeKananAtasMesh);
-        createWireframe(planeKananAtasGeometry);
-
-        var planeKiriAtasGeometry = new THREE.CylinderGeometry(25, 25, 2, 6);
-        planeKiriAtasGeometry.translate(-25, 0, -40);
+        var planeKiriAtasGeometry = new THREE.CylinderGeometry(50, 50, 2, 6);
+        planeKiriAtasGeometry.translate(-45, 0, -80);
         var planeKiriAtasMesh = new THREE.Mesh(planeKiriAtasGeometry, greenMaterial);
+
+        scene.add(planeKananAtasMesh);
         scene.add(planeKiriAtasMesh);
-        createWireframe(planeKiriAtasGeometry);
 
-        var planeKiriTengahGeometry = new THREE.CylinderGeometry(25, 25, 2, 6);
-        planeKiriTengahGeometry.translate(-50, 0, 0);
+        var planeKiriTengahGeometry = new THREE.CylinderGeometry(50, 50, 2, 6);
+        planeKiriTengahGeometry.translate(-90, 0, 0);
         var planeKiriTengahMesh = new THREE.Mesh(planeKiriTengahGeometry, greenMaterial);
-        scene.add(planeKiriTengahMesh);
-        createWireframe(planeKiriTengahGeometry);
-
-        var planeTengahGeometry = new THREE.CylinderGeometry(25, 25, 2, 6);
+        var planeTengahGeometry = new THREE.CylinderGeometry(50, 50, 2, 6);
         planeTengahGeometry.translate(0, 0, 0);
         var planeTengahMesh = new THREE.Mesh(planeTengahGeometry, blueMaterial);
-        scene.add(planeTengahMesh);
-        createWireframe(planeTengahGeometry);
-
-        var planeKananTengahGeometry = new THREE.CylinderGeometry(25, 25, 2, 6);
-        planeKananTengahGeometry.translate(50, 0, 0);
+        var planeKananTengahGeometry = new THREE.CylinderGeometry(50, 50, 2, 6);
+        planeKananTengahGeometry.translate(90, 0, 0);
         var planeKananTengahMesh = new THREE.Mesh(planeKananTengahGeometry, greenMaterial);
+
+        scene.add(planeKiriTengahMesh);
+        scene.add(planeTengahMesh);
         scene.add(planeKananTengahMesh);
-        createWireframe(planeKananTengahGeometry);
 
-        var planeKananBawahGeometry = new THREE.CylinderGeometry(25, 25, 2, 6);
-        planeKananBawahGeometry.translate(25, 0, 40);
+        var planeKananBawahGeometry = new THREE.CylinderGeometry(50, 50, 2, 6);
+        planeKananBawahGeometry.translate(45, 0, 80);
         var planeKananBawahMesh = new THREE.Mesh(planeKananBawahGeometry, greenMaterial);
-        scene.add(planeKananBawahMesh);
-        createWireframe(planeKananBawahGeometry);
-
-        var planeKiriBawahGeometry = new THREE.CylinderGeometry(25, 25, 2, 6);
-        planeKiriBawahGeometry.translate(-25, 0, 40);
+        var planeKiriBawahGeometry = new THREE.CylinderGeometry(50, 50, 2, 6);
+        planeKiriBawahGeometry.translate(-45, 0, 80);
         var planeKiriBawahMesh = new THREE.Mesh(planeKiriBawahGeometry, greenMaterial);
+
+        scene.add(planeKananBawahMesh);
         scene.add(planeKiriBawahMesh);
-        createWireframe(planeKiriBawahGeometry);
+
+        var alienTexture = new THREE.TextureLoader().load('assets/AlienTreeTexture.png');
+        var alienMaterial = new THREE.MeshBasicMaterial({map:alienTexture});
+
+        var evergreenTexture = new THREE.TextureLoader().load('assets/EvergreenTexture.png');
+        var evergreenMaterial = new THREE.MeshBasicMaterial({map:evergreenTexture});
+
+        var pineTexture = new THREE.TextureLoader().load('assets/PineTexture.png');
+        var pineMaterial = new THREE.MeshBasicMaterial({map:pineTexture});
+
+        var objLoader = new THREE.OBJLoader();
+        objLoader.load('assets/PineTree1.obj', function(object){
+            object.scale.x = 10;
+            object.scale.y = 10;
+            object.scale.z = 10;
+            object.position.x -= 60;
+            object.position.z += 60;
+            object.traverse(function(node){
+                if(node.isMesh) node.material = pineMaterial;
+            });
+
+            scene.add(object);
+        });
+        objLoader.load('assets/PineTree3.obj', function(object){
+            object.scale.x = 20;
+            object.scale.y = 10;
+            object.scale.z = 20;
+            object.position.x -= 70;
+            object.position.z -= 70;
+            object.traverse(function(node){
+                if(node.isMesh) node.material = alienMaterial;
+            });
+
+            scene.add(object);
+        });
+        objLoader.load('assets/PineTree2Snowy.obj', function(object){
+            object.scale.x = 40;
+            object.scale.y = 20;
+            object.scale.z = 40;
+            
+            object.traverse(function(node){
+                if(node.isMesh) node.material = evergreenMaterial;
+            });
+
+            scene.add(object);
+        });
+        objLoader.load('assets/PineTree2.obj', function(object){
+            object.scale.x = 5;
+            object.scale.y = 5;
+            object.scale.z = 5;
+            object.position.x += 5;
+            object.position.z += 80;
+            
+            object.traverse(function(node){
+                if(node.isMesh) node.material = alienMaterial;
+            });
+
+            scene.add(object);
+        });
+        objLoader.load('assets/PineTree1Snowy.obj', function(object){
+            object.scale.x = 10;
+            object.scale.y = 15;
+            object.scale.z = 10;
+            object.position.x += 50;
+            object.position.z += 60;
+            
+            object.traverse(function(node){
+                if(node.isMesh) node.material = alienMaterial;
+            });
+
+            scene.add(object);
+        });
+        objLoader.load('assets/PineTree3Snowy.obj', function(object){
+            object.scale.x = 30;
+            object.scale.y = 30;
+            object.scale.z = 30;
+            object.position.x += 70;
+            object.position.z -= 10;
+            
+            object.traverse(function(node){
+                if(node.isMesh) node.material = pineMaterial;
+            });
+
+            scene.add(object);
+        });
+        objLoader.load('assets/PineTree1.obj', function(object){
+            object.scale.x = 10;
+            object.scale.y = 5;
+            object.scale.z = 10;
+            object.position.x += 50;
+            object.position.z += 100;
+            
+            object.traverse(function(node){
+                if(node.isMesh) node.material = evergreenMaterial;
+            });
+
+            scene.add(object);
+        });
+        objLoader.load('assets/PineTree3Snowy.obj', function(object){
+            object.scale.x = 20;
+            object.scale.y = 15;
+            object.scale.z = 20;
+            object.position.x -= 80;
+            object.position.z += 10;
+            
+            object.traverse(function(node){
+                if(node.isMesh) node.material = alienMaterial;
+            });
+
+            scene.add(object);
+        });
+        objLoader.load('assets/PineTree1.obj', function(object){
+            object.scale.x = 12;
+            object.scale.y = 10;
+            object.scale.z = 12;
+            object.position.x -= 40;
+            object.position.z += 100;
+            
+            object.traverse(function(node){
+                if(node.isMesh) node.material = alienMaterial;
+            });
+
+            scene.add(object);
+        });
+        objLoader.load('assets/PineTree1Snowy.obj', function(object){
+            object.scale.x = 25;
+            object.scale.y = 25;
+            object.scale.z = 25;
+            object.position.x += 40;
+            object.position.z -= 100;
+            
+            object.traverse(function(node){
+                if(node.isMesh) node.material = alienMaterial;
+            });
+
+            scene.add(object);
+        });
 
         function createWireframe(geometry) {
             var wireframe = new THREE.WireframeGeometry(geometry);
@@ -200,7 +329,7 @@
                     var x = Math.sin(t * 3) * Math.cos(t * 4) * 50;
                     var y = Math.sin(t * 10) * 2 + Math.cos(t * 17) * 2 + 5;
                     var z = Math.sin(t) * Math.sin(t * 4) * 50;
-                    return vector.set(x, y, z).multiplyScalar(2);
+                    return vector.set(x, y, z).multiplyScalar(10);
                 },
                 getTangentAt: function (t) {
                     var delta = 0.0001;
@@ -212,68 +341,6 @@
                 }
             };
         }();
-
-        var treeCount = 300;
-        var texture = new THREE.TextureLoader().load('assets/AlienTreeTexture.png');
-        var material = new THREE.MeshBasicMaterial({
-            map: texture
-        });
-
-        var treeGroup = new THREE.Group();
-
-        for (let i = 0; i < treeCount; i++) {
-            var objLoader = new THREE.OBJLoader();
-            objLoader.load('assets/PineTree1.obj', function(object){
-                object.position.x -= 30;
-                object.position.z += 30;
-                object.traverse(function(node){
-                    if(node.isMesh) node.material = material;
-                });
-
-                treeGroup.add(object);
-            });
-        }
-        scene.add(treeGroup);
-
-        var texture = new THREE.TextureLoader().load('assets/AlienTreeTexture.png');
-        var material = new THREE.MeshBasicMaterial({map:texture});
-
-        var objLoader = new THREE.OBJLoader();
-        objLoader.load('assets/PineTree1.obj', function(object){
-            object.position.x -= 30;
-            object.position.z += 30;
-            object.traverse(function(node){
-                if(node.isMesh) node.material = material;
-            });
-
-            scene.add(object);
-        });
-        
-        objLoader.load('assets/PineTree3.obj', function(object){
-            object.position.x -= 30;
-            object.position.z -= 30;
-            object.traverse(function(node){
-                if(node.isMesh) node.material = material;
-            });
-
-            scene.add(object);
-        });
-
-        /*var geometry = new RollerCoasterGeometry( curve, 1500 );
-        var material = new THREE.MeshPhongMaterial( {
-            vertexColors: THREE.VertexColors
-        } );
-        var mesh = new THREE.Mesh( geometry, material );
-        scene.add( mesh );
-        var geometry = new RollerCoasterLiftersGeometry( curve, 100 );
-        var material = new THREE.MeshPhongMaterial();
-        var mesh = new THREE.Mesh( geometry, material );
-        mesh.position.y = 0.1;
-        scene.add( mesh );
-        var geometry = new RollerCoasterShadowGeometry( curve, 500 );
-        var material = new THREE.MeshBasicMaterial( {
-            color: 0x305000, depthWrite: false, transparent: true
-        } );*/
 
         window.addEventListener('resize', onWindowResize, false);
         function onWindowResize() {

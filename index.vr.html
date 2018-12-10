@@ -9,6 +9,12 @@
     <script src="libs/WebVR.js"></script>
     <script src="libs/PointerLockControls.js"></script>
     <script src="libs/OrbitControls.js"></script>
+    <script src="libs/OBJLoader.js"></script>
+    <script src="libs/TextureLoader.js"></script>
+    <script src="libs/MeshBasicMaterial.js"></script>
+    <script src="libs/FBXLoader.js"></script>
+    <script src="libs/inflate.min.js"></script>
+    <script src="libs/MTLLoader.js"></script>
 
     <style>
         body {
@@ -204,6 +210,94 @@
             renderer.render( scene, camera );
             prevTime = time;
         }
+        /*SNOW*/
+            // var texture = new THREE.TextureLoader().load('assets/PineTexture.png');
+            // var material = new THREE.MeshBasicMaterial({map:texture});
+
+            // var objLoader = new THREE.OBJLoader();
+            // objLoader.load('assets/PineTree1Snowy.obj', function(object){
+            //     object.scale.x = 10;
+            //     object.scale.y = 10;
+            //     object.scale.z = 10;
+            //     object.position.x -= 30;
+            //     object.position.z += 30;
+            //     object.traverse(function(node){
+            //         if(node.isMesh) node.material = material;
+            //     });
+
+            //     scene.add(object);
+            // });
+            // objLoader.load('assets/PineTree2Snowy.obj', function(object){
+            //     object.scale.x = 10;
+            //     object.scale.y = 10;
+            //     object.scale.z = 10;
+            //     object.position.x -= 30;
+            //     object.position.z -= 30;
+            //     object.traverse(function(node){
+            //         if(node.isMesh) node.material = material;
+            //     });
+
+            //     scene.add(object);
+            // });
+            
+            /*SUMMER*/
+            // var texture = new THREE.TextureLoader().load('assets/EvergreenTexture.png');
+            // var material = new THREE.MeshBasicMaterial({map:texture});
+
+            // var objLoader = new THREE.OBJLoader();
+            // objLoader.load('assets/PineTree2.obj', function(object){
+            //     object.scale.x = 10;
+            //     object.scale.y = 10;
+            //     object.scale.z = 10;
+            //     object.position.x -= 30;
+            //     object.position.z += 30;
+            //     object.traverse(function(node){
+            //         if(node.isMesh) node.material = material;
+            //     });
+
+            //     scene.add(object);
+            // });
+            // objLoader.load('assets/PineTree3.obj', function(object){
+            //     object.scale.x = 10;
+            //     object.scale.y = 10;
+            //     object.scale.z = 10;
+            //     object.position.x -= 30;
+            //     object.position.z -= 30;
+            //     object.traverse(function(node){
+            //         if(node.isMesh) node.material = material;
+            //     });
+
+            //     scene.add(object);
+            // });
+
+            var texture = new THREE.TextureLoader().load('assets/AlienTreeTexture.png');
+            var material = new THREE.MeshBasicMaterial({map:texture});
+
+            var objLoader = new THREE.OBJLoader();
+            objLoader.load('assets/PineTree1.obj', function(object){
+                object.scale.x = 10;
+                object.scale.y = 10;
+                object.scale.z = 10;
+                object.position.x -= 30;
+                object.position.z += 30;
+                object.traverse(function(node){
+                    if(node.isMesh) node.material = material;
+                });
+
+                scene.add(object);
+            });
+            objLoader.load('assets/PineTree3.obj', function(object){
+                object.scale.x = 10;
+                object.scale.y = 10;
+                object.scale.z = 10;
+                object.position.x -= 30;
+                object.position.z -= 30;
+                object.traverse(function(node){
+                    if(node.isMesh) node.material = material;
+                });
+
+                scene.add(object);
+            });
 
         renderer.setAnimationLoop( render );
     </script>

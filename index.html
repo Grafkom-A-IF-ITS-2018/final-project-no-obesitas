@@ -12,6 +12,9 @@
     <script src="libs/OBJLoader.js"></script>
     <script src="libs/TextureLoader.js"></script>
     <script src="libs/MeshBasicMaterial.js"></script>
+    <script src="libs/FBXLoader.js"></script>
+    <script src="libs/inflate.min.js"></script>
+    <script src="libs/MTLLoader.js"></script>
 
     <style>
         body {
@@ -158,12 +161,71 @@
                 requestAnimationFrame(render);
                 renderer.render(scene, camera);
             }
+            /*SNOW*/
+            // var texture = new THREE.TextureLoader().load('assets/PineTexture.png');
+            // var material = new THREE.MeshBasicMaterial({map:texture});
+
+            // var objLoader = new THREE.OBJLoader();
+            // objLoader.load('assets/PineTree1Snowy.obj', function(object){
+            //     object.scale.x = 10;
+            //     object.scale.y = 10;
+            //     object.scale.z = 10;
+            //     object.position.x -= 60;
+            //     object.position.z += 60;
+            //     object.traverse(function(node){
+            //         if(node.isMesh) node.material = material;
+            //     });
+
+            //     scene.add(object);
+            // });
+            // objLoader.load('assets/PineTree2Snowy.obj', function(object){
+            //     object.scale.x = 10;
+            //     object.scale.y = 10;
+            //     object.scale.z = 10;
+            //     object.position.x -= 80;
+            //     object.position.z -= 70;
+            //     object.traverse(function(node){
+            //         if(node.isMesh) node.material = material;
+            //     });
+
+            //     scene.add(object);
+            // });
             
-            var texture = new THREE.TextureLoader().load('assets/PineTexture.png');
+            /*SUMMER*/
+            // var texture = new THREE.TextureLoader().load('assets/EvergreenTexture.png');
+            // var material = new THREE.MeshBasicMaterial({map:texture});
+
+            // var objLoader = new THREE.OBJLoader();
+            // objLoader.load('assets/PineTree2.obj', function(object){
+            //     object.scale.x = 10;
+            //     object.scale.y = 10;
+            //     object.scale.z = 10;
+            //     object.position.x -= 60;
+            //     object.position.z += 60;
+            //     object.traverse(function(node){
+            //         if(node.isMesh) node.material = material;
+            //     });
+
+            //     scene.add(object);
+            // });
+            // objLoader.load('assets/PineTree3.obj', function(object){
+            //     object.scale.x = 10;
+            //     object.scale.y = 10;
+            //     object.scale.z = 10;
+            //     object.position.x -= 80;
+            //     object.position.z -= 70;
+            //     object.traverse(function(node){
+            //         if(node.isMesh) node.material = material;
+            //     });
+
+            //     scene.add(object);
+            // });
+
+            var texture = new THREE.TextureLoader().load('assets/AlienTreeTexture.png');
             var material = new THREE.MeshBasicMaterial({map:texture});
 
             var objLoader = new THREE.OBJLoader();
-            objLoader.load('assets/PineTree1Snowy.obj', function(object){
+            objLoader.load('assets/PineTree1.obj', function(object){
                 object.scale.x = 10;
                 object.scale.y = 10;
                 object.scale.z = 10;
@@ -175,7 +237,7 @@
 
                 scene.add(object);
             });
-            objLoader.load('assets/PineTree1Snowy.obj', function(object){
+            objLoader.load('assets/PineTree3.obj', function(object){
                 object.scale.x = 10;
                 object.scale.y = 10;
                 object.scale.z = 10;
@@ -187,6 +249,7 @@
 
                 scene.add(object);
             });
+
         }
         //window.onload = init;
         init();

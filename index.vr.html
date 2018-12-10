@@ -16,6 +16,7 @@
     <script src="libs/inflate.min.js"></script>
     <script src="libs/MTLLoader.js"></script>
 
+
     <style>
         body {
             margin: 0;
@@ -39,7 +40,7 @@
                 frameOfReferenceType: 'eye-level'
             })
         );
-        
+
         var scene = new THREE.Scene();
         scene.background = new THREE.Color(0x000000);
 
@@ -73,8 +74,55 @@
 
         cloud = new THREE.Points(particleGeometry, materialCloud);
         cloud.sortParticles = true;
-        createWireframe(particleGeometry);
+        //createWireframe(particleGeometry);
         //scene.add(cloud);
+
+        var flakeCount = 5000;
+        var flakeGeometry = new THREE.TetrahedronGeometry(0.035); 
+        var flakeMaterial = new THREE.PointsMaterial({ 
+            color: 0xffffff 
+        });
+        var snow = new THREE.Group();
+
+        for (let i = 0; i < flakeCount; i++) {
+            var flakeMesh = new THREE.Mesh(flakeGeometry, flakeMaterial);
+            flakeMesh.position.set(
+                (Math.random() - 0.5) * 150,
+                (Math.random() - 0.5) * 300,
+                (Math.random() - 0.5) * 150
+            );
+            
+            snow.add(flakeMesh);
+        }
+        scene.add(snow);
+
+        var starsGeometry = new THREE.Geometry();
+
+        for ( var i = 0; i < 10000; i ++ ) {
+
+            var star = new THREE.Vector3();
+            star.x = THREE.Math.randFloatSpread(2000);
+            star.y = THREE.Math.randFloatSpread(2000);
+            star.z = THREE.Math.randFloatSpread(2000);
+
+            if (star.x < 75 && star.x > -75 && star.y < 25 && star.y > -25) {
+                
+            } else {
+                starsGeometry.vertices.push(star);
+                starsGeometry.colors.push(new THREE.Color((Math.random() * (1000 - 750) + 750 * 0x00ffff)));
+            }
+        }
+
+        var starsMaterial = new THREE.PointsMaterial({ 
+            vertexColors: true, 
+            color: 0xffffff
+        });
+
+        var starField = new THREE.Points(starsGeometry, starsMaterial);
+        scene.add( starField );
+
+        var flakeArray = snow.children;
+        //var starArray = star
 
         var planeKananAtasGeometry = new THREE.CylinderGeometry(25, 25, 2, 6);
         planeKananAtasGeometry.translate(25, 0, -40);
@@ -126,6 +174,7 @@
                 linecap: 'round',
                 linejoin:  'round'
             });
+
             var line = new THREE.LineSegments(wireframe, material);
             line.material.depthTest = false;
             line.material.opacity = 0.25;
@@ -164,6 +213,52 @@
             };
         }();
 
+        var treeCount = 300;
+        var texture = new THREE.TextureLoader().load('assets/AlienTreeTexture.png');
+        var material = new THREE.MeshBasicMaterial({
+            map: texture
+        });
+
+        var treeGroup = new THREE.Group();
+
+        for (let i = 0; i < treeCount; i++) {
+            var objLoader = new THREE.OBJLoader();
+            objLoader.load('assets/PineTree1.obj', function(object){
+                object.position.x -= 30;
+                object.position.z += 30;
+                object.traverse(function(node){
+                    if(node.isMesh) node.material = material;
+                });
+
+                treeGroup.add(object);
+            });
+        }
+        scene.add(treeGroup);
+
+        var texture = new THREE.TextureLoader().load('assets/AlienTreeTexture.png');
+        var material = new THREE.MeshBasicMaterial({map:texture});
+
+        var objLoader = new THREE.OBJLoader();
+        objLoader.load('assets/PineTree1.obj', function(object){
+            object.position.x -= 30;
+            object.position.z += 30;
+            object.traverse(function(node){
+                if(node.isMesh) node.material = material;
+            });
+
+            scene.add(object);
+        });
+        
+        objLoader.load('assets/PineTree3.obj', function(object){
+            object.position.x -= 30;
+            object.position.z -= 30;
+            object.traverse(function(node){
+                if(node.isMesh) node.material = material;
+            });
+
+            scene.add(object);
+        });
+
         /*var geometry = new RollerCoasterGeometry( curve, 1500 );
         var material = new THREE.MeshPhongMaterial( {
             vertexColors: THREE.VertexColors
@@ -197,6 +292,8 @@
         function render() {
             var time = performance.now();
             var delta = time - prevTime;
+            var step = 0;
+
             progress += velocity;
             progress = progress % 1;
             position.copy(curve.getPointAt(progress));
@@ -207,97 +304,33 @@
             velocity = Math.max( 0.00004, Math.min( 0.0002, velocity ) );
             spaceCraft.lookAt( lookAt.copy( position ).sub( tangent ) );
 
+            for (i = 0; i < flakeArray.length / 2; i++) {
+                flakeArray[i].rotation.y += 0.01;
+                flakeArray[i].rotation.x += 0.02;
+                flakeArray[i].rotation.z += 0.03;
+                flakeArray[i].position.y -= 0.018;
+                
+                if (flakeArray[i].position.y < -4) {
+                    flakeArray[i].position.y += 10;
+                }
+            }
+
+            for (i = flakeArray.length / 2; i < flakeArray.length; i++) {
+                flakeArray[i].rotation.y -= 0.03;
+                flakeArray[i].rotation.x -= 0.03;
+                flakeArray[i].rotation.z -= 0.02;
+                flakeArray[i].position.y -= 0.016;
+                
+                if (flakeArray[i].position.y < -4) {
+                    flakeArray[i].position.y += 9.5;
+                }
+
+                snow.rotation.y -= 0.0000002;
+            }
+
             renderer.render( scene, camera );
             prevTime = time;
         }
-        /*SNOW*/
-            // var texture = new THREE.TextureLoader().load('assets/PineTexture.png');
-            // var material = new THREE.MeshBasicMaterial({map:texture});
-
-            // var objLoader = new THREE.OBJLoader();
-            // objLoader.load('assets/PineTree1Snowy.obj', function(object){
-            //     object.scale.x = 10;
-            //     object.scale.y = 10;
-            //     object.scale.z = 10;
-            //     object.position.x -= 30;
-            //     object.position.z += 30;
-            //     object.traverse(function(node){
-            //         if(node.isMesh) node.material = material;
-            //     });
-
-            //     scene.add(object);
-            // });
-            // objLoader.load('assets/PineTree2Snowy.obj', function(object){
-            //     object.scale.x = 10;
-            //     object.scale.y = 10;
-            //     object.scale.z = 10;
-            //     object.position.x -= 30;
-            //     object.position.z -= 30;
-            //     object.traverse(function(node){
-            //         if(node.isMesh) node.material = material;
-            //     });
-
-            //     scene.add(object);
-            // });
-            
-            /*SUMMER*/
-            // var texture = new THREE.TextureLoader().load('assets/EvergreenTexture.png');
-            // var material = new THREE.MeshBasicMaterial({map:texture});
-
-            // var objLoader = new THREE.OBJLoader();
-            // objLoader.load('assets/PineTree2.obj', function(object){
-            //     object.scale.x = 10;
-            //     object.scale.y = 10;
-            //     object.scale.z = 10;
-            //     object.position.x -= 30;
-            //     object.position.z += 30;
-            //     object.traverse(function(node){
-            //         if(node.isMesh) node.material = material;
-            //     });
-
-            //     scene.add(object);
-            // });
-            // objLoader.load('assets/PineTree3.obj', function(object){
-            //     object.scale.x = 10;
-            //     object.scale.y = 10;
-            //     object.scale.z = 10;
-            //     object.position.x -= 30;
-            //     object.position.z -= 30;
-            //     object.traverse(function(node){
-            //         if(node.isMesh) node.material = material;
-            //     });
-
-            //     scene.add(object);
-            // });
-
-            var texture = new THREE.TextureLoader().load('assets/AlienTreeTexture.png');
-            var material = new THREE.MeshBasicMaterial({map:texture});
-
-            var objLoader = new THREE.OBJLoader();
-            objLoader.load('assets/PineTree1.obj', function(object){
-                object.scale.x = 10;
-                object.scale.y = 10;
-                object.scale.z = 10;
-                object.position.x -= 30;
-                object.position.z += 30;
-                object.traverse(function(node){
-                    if(node.isMesh) node.material = material;
-                });
-
-                scene.add(object);
-            });
-            objLoader.load('assets/PineTree3.obj', function(object){
-                object.scale.x = 10;
-                object.scale.y = 10;
-                object.scale.z = 10;
-                object.position.x -= 30;
-                object.position.z -= 30;
-                object.traverse(function(node){
-                    if(node.isMesh) node.material = material;
-                });
-
-                scene.add(object);
-            });
 
         renderer.setAnimationLoop( render );
     </script>

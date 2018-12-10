@@ -221,8 +221,14 @@
             //     scene.add(object);
             // });
 
-            var texture = new THREE.TextureLoader().load('assets/AlienTreeTexture.png');
-            var material = new THREE.MeshBasicMaterial({map:texture});
+            var alienTexture = new THREE.TextureLoader().load('assets/AlienTreeTexture.png');
+            var alienMaterial = new THREE.MeshBasicMaterial({map:alienTexture});
+
+            var evergreenTexture = new THREE.TextureLoader().load('assets/EvergreenTexture.png');
+            var evergreenMaterial = new THREE.MeshBasicMaterial({map:evergreenTexture});
+
+            var pineTexture = new THREE.TextureLoader().load('assets/PineTexture.png');
+            var pineMaterial = new THREE.MeshBasicMaterial({map:pineTexture});
 
             var objLoader = new THREE.OBJLoader();
             objLoader.load('assets/PineTree1.obj', function(object){
@@ -232,24 +238,125 @@
                 object.position.x -= 60;
                 object.position.z += 60;
                 object.traverse(function(node){
-                    if(node.isMesh) node.material = material;
+                    if(node.isMesh) node.material = pineMaterial;
                 });
 
                 scene.add(object);
             });
             objLoader.load('assets/PineTree3.obj', function(object){
-                object.scale.x = 10;
+                object.scale.x = 20;
                 object.scale.y = 10;
-                object.scale.z = 10;
-                object.position.x -= 80;
+                object.scale.z = 20;
+                object.position.x -= 70;
                 object.position.z -= 70;
                 object.traverse(function(node){
-                    if(node.isMesh) node.material = material;
+                    if(node.isMesh) node.material = alienMaterial;
                 });
 
                 scene.add(object);
             });
+            objLoader.load('assets/PineTree2Snowy.obj', function(object){
+                object.scale.x = 40;
+                object.scale.y = 20;
+                object.scale.z = 40;
+                
+                object.traverse(function(node){
+                    if(node.isMesh) node.material = evergreenMaterial;
+                });
 
+                scene.add(object);
+            });
+            objLoader.load('assets/PineTree2.obj', function(object){
+                object.scale.x = 5;
+                object.scale.y = 5;
+                object.scale.z = 5;
+                object.position.x += 5;
+                object.position.z += 80;
+                
+                object.traverse(function(node){
+                    if(node.isMesh) node.material = alienMaterial;
+                });
+
+                scene.add(object);
+            });
+            objLoader.load('assets/PineTree1Snowy.obj', function(object){
+                object.scale.x = 10;
+                object.scale.y = 15;
+                object.scale.z = 10;
+                object.position.x += 50;
+                object.position.z += 60;
+                
+                object.traverse(function(node){
+                    if(node.isMesh) node.material = alienMaterial;
+                });
+
+                scene.add(object);
+            });
+            objLoader.load('assets/PineTree3Snowy.obj', function(object){
+                object.scale.x = 30;
+                object.scale.y = 30;
+                object.scale.z = 30;
+                object.position.x += 70;
+                object.position.z -= 10;
+                
+                object.traverse(function(node){
+                    if(node.isMesh) node.material = pineMaterial;
+                });
+
+                scene.add(object);
+            });
+            objLoader.load('assets/PineTree1.obj', function(object){
+                object.scale.x = 10;
+                object.scale.y = 5;
+                object.scale.z = 10;
+                object.position.x += 50;
+                object.position.z += 100;
+                
+                object.traverse(function(node){
+                    if(node.isMesh) node.material = evergreenMaterial;
+                });
+
+                scene.add(object);
+            });
+            objLoader.load('assets/PineTree3Snowy.obj', function(object){
+                object.scale.x = 20;
+                object.scale.y = 15;
+                object.scale.z = 20;
+                object.position.x -= 80;
+                object.position.z += 10;
+                
+                object.traverse(function(node){
+                    if(node.isMesh) node.material = alienMaterial;
+                });
+
+                scene.add(object);
+            });
+            objLoader.load('assets/PineTree1.obj', function(object){
+                object.scale.x = 12;
+                object.scale.y = 10;
+                object.scale.z = 12;
+                object.position.x -= 40;
+                object.position.z += 100;
+                
+                object.traverse(function(node){
+                    if(node.isMesh) node.material = alienMaterial;
+                });
+
+                scene.add(object);
+            });
+            objLoader.load('assets/PineTree1Snowy.obj', function(object){
+                object.scale.x = 25;
+                object.scale.y = 25;
+                object.scale.z = 25;
+                object.position.x += 40;
+                object.position.z -= 100;
+                
+                object.traverse(function(node){
+                    if(node.isMesh) node.material = alienMaterial;
+                });
+
+                scene.add(object);
+            });
         }
         //window.onload = init;
         init();
